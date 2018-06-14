@@ -1,7 +1,7 @@
 from app import app, db
 from app.models import FeatureRequest, Client
 from app.schemas import FeatureRequestSchema, ClientSchema
-from flask import render_template, request, jsonify, _app_ctx_stack
+from flask import render_template, request, jsonify
 
 ## Routes
 ## Reference: REST API Design Rulebook

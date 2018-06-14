@@ -16,6 +16,8 @@
     "tests"
   ],
   "dependencies": {
-    "bootstrap4": "^4.1.1"
+    "bootstrap4": "^4.1.1",
+    "knockout": "knockoutjs#^3.4.2",
+    "jquery": "^3.3.1"
   }
 }

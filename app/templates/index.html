@@ -1,0 +1,50 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<h1 class="mt-5">Add Request</h1>
+<form data-bind="submit: addFeatureRequest">
+
+  <div class="form-group">
+    <label>Title</label>
+    <input
+      data-bind="value: newFeatureRequestTitle"
+      placeholder="What's this feature called?"
+      class="form-control"
+    />
+  </div>
+
+  <div class="form-group">
+    <label>Description</label>
+    <textarea
+      data-bind="value: newFeatureRequestDesc"
+      placeholder="What are the details?"
+      class="form-control"
+    ></textarea>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Submit</button>
+
+</form>
+
+<div data-bind="foreach: featureRequests, visible: featureRequests().length > 0">
+  <div class="row">
+    <div class="col-sm-12">
+      <div class="card fr-card" style="width: 18rem;">
+        <div class="card-header">
+          <h5 class="card-title" data-bind="text: title"></h5>
+        </div>
+        <div class="card-body">
+          <p class="card-text" data-bind="text: description">Some quick example text to build on the card title and make up the bulk of the card's content.</p>
+          <a href="#" class="card-link">Delete</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='js/requests.js') }}"></script>
+{% endblock %}

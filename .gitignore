@@ -2,9 +2,9 @@
 *~
 *.db
 .DS_Store
-static/bower_components
+app/static/bower_components
 __pycache__
-venv
+env
 
 # C extensions
 *.so

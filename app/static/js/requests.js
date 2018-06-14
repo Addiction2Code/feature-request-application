@@ -2,6 +2,7 @@ function FeatureRequest(data) {
   this.id = ko.observable(data.id);
   this.title = ko.observable(data.title);
   this.description = ko.observable(data.description);
+  this.client = ko.observable(data.client);
 }
 
 function FeatureRequestListViewModel() {
@@ -20,7 +21,7 @@ function FeatureRequestListViewModel() {
 
   self.save = function() {
   	return $.ajax({
-  	  url: '/feature-requests/new',
+  	  url: '/api/feature-requests/new',
   	  contentType: 'application/json',
   	  type: 'POST',
   	  data: JSON.stringify({
@@ -41,7 +42,7 @@ function FeatureRequestListViewModel() {
   };
 
   // Get Feature Requests at runtime.
-  $.getJSON('/feature-requests', function(featureRequestModels) {
+  $.getJSON('/api/feature-requests', function(featureRequestModels) {
   	var temp = $.map(featureRequestModels.feature_requests, function(item) {
   	  return new FeatureRequest(item);
   	});

@@ -1,0 +1,21 @@
+{
+  "name": "feature-request-frontend",
+  "description": "",
+  "main": "",
+  "authors": [
+    "Paul Serra"
+  ],
+  "license": "MIT",
+  "homepage": "",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap4": "^4.1.1"
+  }
+}

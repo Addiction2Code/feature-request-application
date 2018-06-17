@@ -8,3 +8,6 @@ Today is the first day working on this application. So far I've refreshed myself
 
 ### June 14th, 2018.
 Things needed more separation so everything was extrapolated a bit. Templates now have a `layout.html` file they extend, the main contents of the app are in `app` and we started using SQLAlchemy. Additionally, a "Clients" page and model was added. In order to further control the JSON the API returns marshmallow_sqlalchemy was used.
+
+### June 17th, 2018.
+Worked on prioritizing list function. Didn't realize Borders closed at 7pm on Sunday, didn't have as much time here as I had hoped.

@@ -2,33 +2,7 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-<h1 class="mt-5">Top Priority Request</h1>
-
-<table class="table table-hover">
-  <thead>
-    <th>Title</th>
-    <th>Client</th>
-    <th>Priority</th>
-    <th>Actions</th>
-  </thead>
-  <tbody data-bind="foreach: featureRequests, visible: featureRequests().length > 0">
-    <tr data-bind="attr: { 'data-id': id() }">
-      <td data-bind="text: title"></td>
-      <td data-bind="text: clientName"></td>
-      <td data-bind="text: priorityText()"></td>
-      <td>
-        <button class="btn-sm btn-danger" data-bind="
-            click: function() {
-              $parent.deleteFeatureRequest(id())
-            }
-        ">
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
+<h1 class="mt-5">Add Request</h1>
 <form data-bind="submit: addFeatureRequest">
 
   <div class="row">
@@ -52,7 +26,7 @@
           optionsValue: function(item) {
             return item.id;
           },
-          value: newFeatureRequestClient.selectedId,
+          value: newFeatureRequestClient.selected,
         "
       ></select>
     </div>
@@ -80,8 +54,24 @@
 
   <button type="submit" class="btn btn-primary">Submit</button>
 
-</form><br/>
+</form>
 
+<table class="table table-hover">
+  <thead>
+    <th>Id</th>
+    <th>Name</th>
+    <th>Priority</th>
+    <th>Actions</th>
+  </thead>
+  <tbody data-bind="foreach: featureRequests, visible: featureRequests().length > 0">
+    <tr data-bind="id: id">
+      <td scope="row" data-bind="text: id"></td>
+      <td data-bind="text: name"></td>
+      <td data-bind="text: priority"></td>
+      <td>Delete</td>
+    </tr>
+  </tbody>
+</table>
 {% endblock %}
 
 {% block footer_scripts %}

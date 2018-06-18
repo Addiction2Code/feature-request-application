@@ -14,7 +14,7 @@
     <tr>
       <td scope="row" data-bind="text: id"></td>
       <td data-bind="text: name"></td>
-      <td>Delete</td>
+      <td><a data-bind="attr: { href: '/api/clients/delete/'+id() }">Delete</a></td>
     </tr>
   </tbody>
 </table>

@@ -1,5 +1,17 @@
-function nth(n){
-  return["st","nd","rd"][((n+90)%100-10)%10-1]||"th"
+//
+// Helper Functions
+//
+
+function numOrdinal(n){
+  return n+(["st","nd","rd"][((n+90)%100-10)%10-1]||"th")
+}
+
+//
+// Constructors
+//
+
+function ProductArea(data) {
+  this.name = ko.observable(data.name);
 }
 
 function Client(data) {
@@ -15,9 +27,10 @@ function FeatureRequest(data) {
   this.priority = ko.observable(data.priority);
   this.clientId = ko.observable(data.client.id);
   this.clientName = ko.observable(data.client.name);
+  this.productArea = ko.observable(data.product_area);
   //this.client_name = ko.observable(data.client.name);
   /* Computed Fields */
   this.priorityText = function() {
-    return this.priority()+nth(this.priority());
+    return numOrdinal(this.priority());
   }
 }

@@ -1,0 +1,40 @@
+[
+    {
+        "model": "app.models.FeatureRequest",
+        "records": [{
+            "title": "Add new Quotation tool to dashboard.",
+            "description": "They want a widget on the front page.",
+            "product_area": "Claims",
+            "priority": 3,
+            "client_id": 1
+        },
+        {
+            "title": "Move toolbar to footer, again.",
+            "description": "They want it where we originally put it, again.",
+            "product_area": "Policies",
+            "priority": 2,
+            "client_id": 1
+        },
+        {
+            "title": "Calculate totals with and without late fee(s).",
+            "description": "There should be an additional line item in the generated document showing fees.",
+            "product_area": "Reports",
+            "priority": 1,
+            "client_id": 1
+        },
+        {
+            "title": "Re-style front-page to follow the client's branding.",
+            "description": "See the email attachement called 'ClientDBranding.pdf'.",
+            "product_area": "Policies",
+            "priority": 1,
+            "client_id": 2
+        },
+        {
+            "title": "Add client's own disclaimer to bottom of all reports.",
+            "description": "Since they operate internationally our default doesn't quite cut it, apprently. (send note to legal)",
+            "product_area": "Reports",
+            "priority": 2,
+            "client_id": 2
+        }]
+    }
+]

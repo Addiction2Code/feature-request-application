@@ -15,6 +15,23 @@ function ClientListViewModel() {
   	self.newClientName("");
   };
 
+  self.deleteClient = function(id) {
+    return $.ajax({
+  	  url: `/api/clients/delete/${id}`,
+  	  contentType: 'application/json',
+  	  type: 'DELETE',
+  	  success: function(data) {
+        self.clients(self.clients().filter(function(obj) {
+          return obj.id() !== id;
+        }));
+    		return;
+  	  },
+  	  error: function() {
+  		  return console.log("Could not delete request!");
+  	  }
+  	});
+  };
+
   self.save = function() {
   	return $.ajax({
   	  url: '/api/clients/new',

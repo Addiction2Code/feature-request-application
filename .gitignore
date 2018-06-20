@@ -2,6 +2,7 @@
 *~
 *.db
 .DS_Store
+.ebignore
 app/static/bower_components
 __pycache__
 env
@@ -39,3 +40,8 @@ nosetests.xml
 .mr.developer.cfg
 .project
 .pydevproject
+
+# Elastic Beanstalk Files
+.elasticbeanstalk/*
+!.elasticbeanstalk/*.cfg.yml
+!.elasticbeanstalk/*.global.yml

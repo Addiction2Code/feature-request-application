@@ -3,8 +3,9 @@ from sqlalchemy import func
 
 class FeatureRequest(db.Model):
   id = db.Column(db.Integer, primary_key=True)
-  title = db.Column(db.String(150), unique = True, nullable=False)
+  title = db.Column(db.String(150), nullable=False)
   description = db.Column(db.String(564), default='')
+  product_area = db.Column(db.String(255), default='')
   priority = db.Column(db.Integer)
   client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
   client = db.relationship("Client", back_populates="feature_requests")
@@ -27,7 +28,7 @@ class FeatureRequest(db.Model):
 class Client(db.Model):
   id = db.Column(db.Integer, primary_key=True)
   name = db.Column(db.String(150), unique = True, nullable=False)
-  feature_requests = db.relationship("FeatureRequest", back_populates="client")
+  feature_requests = db.relationship("FeatureRequest", back_populates="client", cascade="delete")
 
   def __repr__(self):
     return self.name

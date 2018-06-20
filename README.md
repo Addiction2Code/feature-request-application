@@ -1,6 +1,8 @@
 Feature Request App
 ===================
 
+**Note:** This app uses Python 3.6 which will need to be installed on your system. As you are likely aware, some installations of `python` include the version as part of the name *i.e.* `python3` or `python2`, this also goes for `pip` sometimes being `pip2` or `pip3`. Take a few moments to determine the proper commands before continuing to the next step.
+
 To start this app you'll want to install the requirements found in `requirements.txt`.
 
 If you suffer from that odd angsty feeling of never quite knowing how much junk is installed on your system ✋, take a moment to install a virtual environment _first_.
@@ -17,7 +19,7 @@ Next, we need to grab our front-end dependencies through [Bower](https://bower.i
 
 Navigate to the `static` folder and type `bower install`.
 
-Go back up a directory and run the following to create the database.
+Go back up a directory and run the following to create the database. Note that the following command will preload the local (default SQLite3) database with some entries, it will also overwrite entries from any previous uses.
 
 `python db_create.py`
 

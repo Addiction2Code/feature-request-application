@@ -1,0 +1,14 @@
+[
+    {
+        "model": "app.models.Client",
+        "records": [{
+            "name": "Client A"
+        }, {
+            "name": "Client B"
+        }, {
+            "name": "Client C"
+        }, {
+            "name": "Client D"  
+        }]
+    }
+]

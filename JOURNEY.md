@@ -17,3 +17,8 @@ Hopefully you're not on a diet because here we have the "meat and potatoes" of t
 
 ### June 19th, 2018.
 Today was fun, a lot of the major components came together. Drag and drop functionality was added to the request lists! This means, in addition to adding a new request with a priority and having the list update in real-time, you can also re-arrange existing requests. The interface has also been updated.
+
+### June 20th, 2018.
+Mostly just some testing and cleanup before sending this app on it's way.
+
+Hope to discuss everything in detail.

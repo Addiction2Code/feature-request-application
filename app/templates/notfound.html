@@ -1,0 +1,46 @@
+{% extends "layout.html" %}
+{% block title %}Not Found{% endblock %}
+
+{% block content %}
+<div class="client-switcher">
+  <p class="lead">&nbsp;Navigate through client lists here.</p>
+  <div class="btn-group" role="group" aria-label="Client Switcher" data-bind="foreach: clients">
+    <button
+      class="btn btn-light"
+      data-bind="
+        text: name,
+        click: function () {
+          location.href='/feature-requests/'+id();
+        }
+      ">
+    </button>
+  </div>
+  <button
+    class="btn btn-primary"
+    data-bind="
+      click: function () {
+        location.href='/clients';
+      }
+    "><span class="oi oi-plus"></span>&nbsp;Add Client
+  </button>
+
+</div>
+
+<br />
+<h1 class="display-4">Uh oh.</h1>
+<p class="lead">
+  It appears we couldn't find what you were looking for!<br/>
+  Not to fret, this app is small and all the links should be accessible from here.<br/><br/>
+  To get started, either select a client in the above menu, or <a href="/clients">add a client</a>.<br/>
+  Once a client is added, you may manage their requests.
+</p>
+<br />
+
+</form><br/>
+
+{% endblock %}
+
+{% block footer_scripts %}
+  {{ super() }}
+  <script src="{{ url_for('static', filename='clients.js') }}"></script>
+{% endblock %}

@@ -51,6 +51,7 @@
     <tr>
       <th style="display:none" data-field="id" data-visible="false">id</th>
       <th data-field="title">Title</th>
+      <th data-field="product-area">Product Area</th>
       <th data-field="client">Client</th>
       <th class="priority-col" data-field="priority" data-sortable="true">Priority</th>
       <th class="details-col" data-field="details" data-sortable="true">Details</th>
@@ -62,6 +63,7 @@
     <tr data-bind="attr: { 'id': 'itemId_'+id(), 'data-index': id() }">
       <td style="display:none" data-bind="text: id"></td>
       <td data-bind="text: title"></td>
+      <td data-bind="text: productArea"></td>
       <td data-bind="text: clientName"></td>
       <td class="priority-row-item lead" data-bind="text: priorityText()"></td>
       <td class="details-row-item">
@@ -82,12 +84,24 @@
       </td>
     </tr>
   </tbody>
+  <!-- ko if: featureRequests().length == 0 -->
+    <tbody>
+      <tr>
+        <td><span class="lead">Phew! No open requests from these guys!</span></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </tbody>
+  <!-- /ko -->
 </table>
 
 <form data-bind="submit: addFeatureRequest">
 
   <div class="row">
-    <div class="form-group col-sm-6">
+    <div class="form-group col-sm-6 col-md-5">
       <label>Title</label>
       <input
         required="true"
@@ -96,7 +110,24 @@
         class="form-control"
       />
     </div>
-    <div class="form-group col-sm-4">
+    <div class="form-group col-sm-6 col-md-3">
+      <label>Product Area</label>
+      <select
+        required="true"
+        class="form-control"
+        data-bind="
+          options: newFeatureRequestProductArea.options(),
+          optionsText: function(item) {
+            return item.name();
+          },
+          optionsValue: function(item) {
+            return item.name();
+          },
+          value: newFeatureRequestProductArea.selectedId
+        "
+      ></select>
+    </div>
+    <div class="form-group col-sm-6 col-md-3">
       <label>Client</label>
       <select
         class="form-control"
@@ -113,9 +144,10 @@
         "
       ></select>
     </div>
-    <div class="form-group col-sm-2">
+    <div class="form-group col-sm-6 col-md-1">
       <label>Priority</label>
       <input
+        required="true"
         type="number"
         min="1"
         data-bind="value: newFeatureRequestPriority"

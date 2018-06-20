@@ -1,19 +1,26 @@
 from app import app, db
 from app.models import FeatureRequest, Client
 from app.schemas import FeatureRequestSchema, ClientSchema
-from flask import render_template, request, jsonify
+from flask import render_template, request, jsonify, redirect, url_for
 from sqlalchemy import update
+
+##
+## Important Functions
+##
 
 # This function works like a revolver
 def rotate_list(items, up=True):
-  if up:
-    # Priority of current Increasing (in n to 1 direction)
-    items.insert(0, items.pop(-1))
-  else:
-    # Priority of current Decreasing (in 1 to n direction)
-    items.append(items.pop(0))
+  # If there are no items in list, do not reorder.
+  if len(items):
+    if up:
+      # Priority of current Increasing (in n to 1 direction)
+      items.insert(0, items.pop(-1))
+    else:
+      # Priority of current Decreasing (in 1 to n direction)
+      items.append(items.pop(0))
   return items
 
+# Update feature_requests with priority according to index+start_priority
 def store_feature_request_order(feature_requests, start_priority=1):
   for index, item in enumerate(feature_requests):
     if item != None:
@@ -23,6 +30,7 @@ def store_feature_request_order(feature_requests, start_priority=1):
       })
       db.session.commit()
   return feature_requests
+
 
 def reprioritize_feature_requests(client_id, cur_priority, new_priority):
   priorities = sorted([int(cur_priority), int(new_priority)])
@@ -40,10 +48,16 @@ def reprioritize_feature_requests(client_id, cur_priority, new_priority):
   )
   return store_feature_request_order(revolver, priorities[0])
 
+
+##
 ## Routes
 ## Reference: REST API Design Rulebook
+##
 
+##
 ## Page Related
+##
+
 @app.route('/')
 def index():
   return render_template('index.html')
@@ -55,21 +69,33 @@ def clients():
 @app.route('/feature-requests/<client_id>')
 def feature_requests(client_id):
   client = Client.query.filter(Client.id==client_id).first()
-  return render_template('requests.html', client=client)
+  if client:
+    return render_template('requests.html', client=client)
+  else:
+    return redirect(url_for('index'), code=302)
 
+@app.errorhandler(404)
+def page_not_found(e):
+  # note that we set the 404 status explicitly
+  return render_template('notfound.html'), 404
+
+
+##
 ## API Related
+##
+
+
+## Feature Requests
+
 @app.route('/api/feature-requests')
 @app.route('/api/feature-requests/<int:client_id>')
 def get_feature_requests(client_id=None):
-  print(client_id)
   feature_requests = FeatureRequest.query
   if(isinstance(client_id, int)):
-    print("HERE!!!")
     feature_requests = feature_requests.filter(FeatureRequest.client_id==client_id)
   feature_requests = feature_requests.order_by(FeatureRequest.priority.asc()).all()
   feature_requests_schema = FeatureRequestSchema(many=True)
   result = feature_requests_schema.dump(feature_requests).data
-  print(result)
   return jsonify(feature_requests=result)
 
 @app.route('/api/feature-requests/new', methods=['POST'])
@@ -78,6 +104,7 @@ def create_feature_request():
   initial_priority = FeatureRequest.nextPriorityByClient(request.json['client_id'])
   feature_request = FeatureRequest(
     title=request.json['title'],
+    product_area=request.json['product_area'],
     description=(request.json['description'] if 'description' in request.json.keys() else ""),
     priority=initial_priority,
     client_id=request.json['client_id']
@@ -107,11 +134,11 @@ def prioritize_feature_request():
 #   )
 #   return jsonify(feature_requests=result);
 
-@app.route('/api/feature-requests/delete/<feature_request_id>', methods=['DELETE'])
+@app.route('/api/feature-requests/delete/<int:feature_request_id>', methods=['DELETE'])
 def delete_feature_request(feature_request_id):
   feature_request = FeatureRequest.query.filter(FeatureRequest.id==feature_request_id).first()
-  print(feature_request)
   db.session.delete(feature_request)
+  db.session.commit()
   # Should re-prioritize...
   result = reprioritize_feature_requests(
     feature_request.client_id,
@@ -119,6 +146,8 @@ def delete_feature_request(feature_request_id):
     (FeatureRequest.nextPriorityByClient(feature_request.client_id)-1)
   )
   return jsonify(feature_requests=result)
+
+## Clients
 
 @app.route('/api/clients')
 def get_clients():
@@ -139,3 +168,10 @@ def create_client():
     "name": request.json['name'],
     "id": id
   })
+
+@app.route('/api/clients/delete/<client_id>', methods=['DELETE'])
+def delete_client(client_id):
+  client = Client.query.filter(Client.id==client_id).first()
+  result = db.session.delete(client)
+  db.session.commit()
+  return jsonify(success=result)

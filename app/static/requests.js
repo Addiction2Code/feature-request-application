@@ -12,7 +12,7 @@ function FeatureRequestListViewModel() {
   self.featureRequests = ko.observableArray([]);
   self.newFeatureRequestTitle = ko.observable();
   self.newFeatureRequestDesc = ko.observable();
-  self.newFeatureProductArea = ko.observable();
+  self.newFeatureRequestTargetDate = ko.observable(new Date().toISOString().split('T')[0]);
   self.newFeatureRequestPriority = ko.observable();
   self.newFeatureRequestClient = {
     options: ko.observableArray(["Loading..."]),
@@ -49,7 +49,6 @@ function FeatureRequestListViewModel() {
         // Store "Drag To" location.
         self.finDragItem(null);
         self.finDragItem($(row).index()+1);
-        console.log({"start": self.curDragItem(), "stop": self.finDragItem()});
         // Tell the server to reprioritize requests between the given params.
         return $.ajax({
           url: '/api/feature-requests/prioritize',
@@ -85,6 +84,11 @@ function FeatureRequestListViewModel() {
   //
   // Operations
   //
+
+  self.displayFriendlyDate = function(date) {
+    d = new Date(date);
+    return (d.getUTCMonth()+1)+'/'+(d.getUTCDate())+'/'+(d.getUTCFullYear());
+  }
 
   // Save and clear data.
   self.addFeatureRequest = function() {
@@ -153,6 +157,7 @@ function FeatureRequestListViewModel() {
   	  data: JSON.stringify({
   		  'title': self.newFeatureRequestTitle(),
         'product_area': self.newFeatureRequestProductArea.selectedId(),
+        'target_date': self.newFeatureRequestTargetDate(),
   		  'description': self.newFeatureRequestDesc() ? self.newFeatureRequestDesc() : '',
         'priority': parseInt(self.newFeatureRequestPriority()),
         'client_id': self.newFeatureRequestClient.selectedId(),

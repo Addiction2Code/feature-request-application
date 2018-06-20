@@ -6,6 +6,7 @@ class FeatureRequest(db.Model):
   title = db.Column(db.String(150), nullable=False)
   description = db.Column(db.String(564), default='')
   product_area = db.Column(db.String(255), default='')
+  target_date = db.Column(db.Date, default='')
   priority = db.Column(db.Integer)
   client_id = db.Column(db.Integer, db.ForeignKey('client.id'))
   client = db.relationship("Client", back_populates="feature_requests")

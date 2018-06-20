@@ -52,6 +52,7 @@
       <th style="display:none" data-field="id" data-visible="false">id</th>
       <th data-field="title">Title</th>
       <th data-field="product-area">Product Area</th>
+      <th data-field="target-date">Target Date</th>
       <th data-field="client">Client</th>
       <th class="priority-col" data-field="priority" data-sortable="true">Priority</th>
       <th class="details-col" data-field="details" data-sortable="true">Details</th>
@@ -62,8 +63,14 @@
   <!-- <tbody data-bind="foreach: featureRequests, visible: featureRequests().length > 0"> -->
     <tr data-bind="attr: { 'id': 'itemId_'+id(), 'data-index': id() }">
       <td style="display:none" data-bind="text: id"></td>
-      <td data-bind="text: title"></td>
+      <td data-bind="
+        text: title,
+        attr: {
+          title: title
+        }
+      "></td>
       <td data-bind="text: productArea"></td>
+      <td data-bind="text: $parent.displayFriendlyDate(targetDate())"></td>
       <td data-bind="text: clientName"></td>
       <td class="priority-row-item lead" data-bind="text: priorityText()"></td>
       <td class="details-row-item">
@@ -93,6 +100,7 @@
         <td></td>
         <td></td>
         <td></td>
+        <td></td>
       </tr>
     </tbody>
   <!-- /ko -->
@@ -101,7 +109,7 @@
 <form data-bind="submit: addFeatureRequest">
 
   <div class="row">
-    <div class="form-group col-sm-6 col-md-5">
+    <div class="form-group col-sm-12 col-md-4">
       <label>Title</label>
       <input
         required="true"
@@ -110,7 +118,7 @@
         class="form-control"
       />
     </div>
-    <div class="form-group col-sm-6 col-md-3">
+    <div class="form-group col-sm-6 col-md-2">
       <label>Product Area</label>
       <select
         required="true"
@@ -127,7 +135,7 @@
         "
       ></select>
     </div>
-    <div class="form-group col-sm-6 col-md-3">
+    <div class="form-group col-sm-6 col-md-2">
       <label>Client</label>
       <select
         class="form-control"
@@ -143,6 +151,15 @@
           value: curClient().id
         "
       ></select>
+    </div>
+    <div class="form-group col-sm-6 col-md-3">
+      <label>Target Date</label>
+      <input
+        required="true"
+        type="date"
+        data-bind="value: newFeatureRequestTargetDate"
+        class="form-control"
+      />
     </div>
     <div class="form-group col-sm-6 col-md-1">
       <label>Priority</label>

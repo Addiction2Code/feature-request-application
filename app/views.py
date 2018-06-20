@@ -3,6 +3,7 @@ from app.models import FeatureRequest, Client
 from app.schemas import FeatureRequestSchema, ClientSchema
 from flask import render_template, request, jsonify, redirect, url_for
 from sqlalchemy import update
+from datetime import datetime
 
 ##
 ## Important Functions
@@ -105,6 +106,7 @@ def create_feature_request():
   feature_request = FeatureRequest(
     title=request.json['title'],
     product_area=request.json['product_area'],
+    target_date=datetime.strptime(request.json['target_date'], "%Y-%m-%d").date(),
     description=(request.json['description'] if 'description' in request.json.keys() else ""),
     priority=initial_priority,
     client_id=request.json['client_id']

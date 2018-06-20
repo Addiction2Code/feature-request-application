@@ -28,6 +28,7 @@ function FeatureRequest(data) {
   this.clientId = ko.observable(data.client.id);
   this.clientName = ko.observable(data.client.name);
   this.productArea = ko.observable(data.product_area);
+  this.targetDate = ko.observable(data.target_date);
   //this.client_name = ko.observable(data.client.name);
   /* Computed Fields */
   this.priorityText = function() {

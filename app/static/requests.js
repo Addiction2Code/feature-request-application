@@ -177,6 +177,7 @@ function FeatureRequestListViewModel() {
     self.initTableFeatures();
   });
 
+
   self.curClient(new Client(window.FeatureHandler.client));
   self.newFeatureRequestClient.selectedId(self.curClient().id());
 

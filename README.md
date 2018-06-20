@@ -3,6 +3,9 @@ Feature Request App
 
 ![Main Page of App](https://raw.githubusercontent.com/Addiction2Code/feature-request-application/master/screenshots/main-page.png)
 
+Getting Started
+===============
+
 **Note:** This app uses Python 3.6 which will need to be installed on your system. As you are likely aware, some installations of `python` include the version as part of the name *i.e.* `python3` or `python2`, this also goes for `pip` sometimes being `pip2` or `pip3`. Take a few moments to determine the proper commands before continuing to the next step.
 
 To start this app you'll want to install the requirements found in `requirements.txt`.

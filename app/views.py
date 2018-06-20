@@ -33,7 +33,7 @@ def store_feature_request_order(feature_requests, start_priority=1):
   return feature_requests
 
 
-def reprioritize_feature_requests(client_id, cur_priority, new_priority):
+def reprioritize_feature_requests(client_id, cur_priority, new_priority, rotate=True):
   priorities = sorted([int(cur_priority), int(new_priority)])
   feature_requests = FeatureRequest.query.filter(
     FeatureRequest.client_id==client_id,
@@ -43,10 +43,13 @@ def reprioritize_feature_requests(client_id, cur_priority, new_priority):
   )
   feature_requests_schema = FeatureRequestSchema(many=True)
   # The second param determines if the current item is being moved up or not.
-  revolver = rotate_list(
-    feature_requests_schema.dump(feature_requests).data,
-    (int(cur_priority) > int(new_priority))
-  )
+  revolver = feature_requests_schema.dump(feature_requests).data
+  # Should we rotate? When deleting it doesn't make sense to.
+  if(rotate):
+    revolver = rotate_list(
+      revolver,
+      (int(cur_priority) > int(new_priority))
+    )
   return store_feature_request_order(revolver, priorities[0])
 
 
@@ -145,7 +148,8 @@ def delete_feature_request(feature_request_id):
   result = reprioritize_feature_requests(
     feature_request.client_id,
     feature_request.priority,
-    (FeatureRequest.nextPriorityByClient(feature_request.client_id)-1)
+    (FeatureRequest.nextPriorityByClient(feature_request.client_id)-1),
+    False
   )
   return jsonify(feature_requests=result)
 

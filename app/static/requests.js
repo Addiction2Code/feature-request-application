@@ -172,11 +172,6 @@ function FeatureRequestListViewModel() {
   	});
   };
 
-  // Initialize Drag Drop and Tooltip (Details)
-  $(document).ready(function() {
-    self.initTableFeatures();
-  });
-
 
   self.curClient(new Client(window.FeatureHandler.client));
   self.newFeatureRequestClient.selectedId(self.curClient().id());
@@ -197,6 +192,12 @@ function FeatureRequestListViewModel() {
     self.clients(temp);
     self.newFeatureRequestClient.options(temp);
   });
+
+  // Initialize Drag Drop and Tooltip (Details)
+  $(document).ready(function() {
+    self.initTableFeatures();
+  });
+
 }
 
 ko.applyBindings(new FeatureRequestListViewModel());

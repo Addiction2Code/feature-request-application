@@ -24,7 +24,7 @@ body {
 -------------------------------------------------- */
 
 body > main.container {
-  padding: 60px 10px 15px 10px;
+  padding: 20px 10px 15px 10px;
 }
 
 .footer {
@@ -42,4 +42,42 @@ code {
 
 .fr-card {
   margin-bottom: 1em;
+}
+
+.client-switcher {
+  margin-top: 1em;
+}
+
+.client-switcher button {
+  margin: 0.5em 0px;
+}
+
+.thead-custom {
+  color: #fff;
+  background-color: #343a40;
+}
+
+.light-blue-grey {
+  background-color: #cfd8dc;
+}
+
+th.actions-col, th.details-col, th.priority-col {
+  width: 8%;
+}
+
+.priority-row-item {
+  text-align: center;
+}
+
+.details-row-item a {
+  text-decoration: underline !important;
+}
+
+.details-row-item a:hover {
+  cursor: pointer;
+}
+
+#mainTable {
+  margin-bottom: 2em;
+  border: 1px solid #ddd;
 }

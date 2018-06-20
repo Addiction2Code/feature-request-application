@@ -2,83 +2,37 @@
 {% block title %}Welcome{% endblock %}
 
 {% block content %}
-<h1 class="mt-5">Top Priority Request</h1>
-
-<table class="table table-hover">
-  <thead>
-    <th>Title</th>
-    <th>Client</th>
-    <th>Priority</th>
-    <th>Actions</th>
-  </thead>
-  <tbody data-bind="foreach: featureRequests, visible: featureRequests().length > 0">
-    <tr data-bind="attr: { 'data-id': id() }">
-      <td data-bind="text: title"></td>
-      <td data-bind="text: clientName"></td>
-      <td data-bind="text: priorityText()"></td>
-      <td>
-        <button class="btn-sm btn-danger" data-bind="
-            click: function() {
-              $parent.deleteFeatureRequest(id())
-            }
-        ">
-          Delete
-        </button>
-      </td>
-    </tr>
-  </tbody>
-</table>
-
-<form data-bind="submit: addFeatureRequest">
-
-  <div class="row">
-    <div class="form-group col-sm-6">
-      <label>Title</label>
-      <input
-        data-bind="value: newFeatureRequestTitle"
-        placeholder="What's this feature called?"
-        class="form-control"
-      />
-    </div>
-    <div class="form-group col-sm-4">
-      <label>Client</label>
-      <select
-        class="form-control"
-        data-bind="
-          options: newFeatureRequestClient.options,
-          optionsText: function(item) {
-            return item.name;
-          },
-          optionsValue: function(item) {
-            return item.id;
-          },
-          value: newFeatureRequestClient.selectedId,
-        "
-      ></select>
-    </div>
-    <div class="form-group col-sm-2">
-      <label>Priority</label>
-      <input
-        type="number"
-        min="1"
-        data-bind="value: newFeatureRequestPriority"
-        placeholder="1..n"
-        class="form-control"
-      />
-    </div>
+<div class="client-switcher">
+  <p class="lead">&nbsp;Navigate through client lists here.</p>
+  <div class="btn-group" role="group" aria-label="Client Switcher" data-bind="foreach: clients">
+    <button
+      class="btn btn-light"
+      data-bind="
+        text: name,
+        click: function () {
+          location.href='/feature-requests/'+id();
+        }
+      ">
+    </button>
   </div>
-  <div class="row">
-    <div class="form-group col-sm-12">
-      <label>Details</label>
-      <textarea
-        data-bind="value: newFeatureRequestDesc"
-        placeholder="What are the details?"
-        class="form-control"
-      ></textarea>
-    </div>
-  </div>
+  <button
+    class="btn btn-primary"
+    data-bind="
+      click: function () {
+        location.href='/clients';
+      }
+    "><span class="oi oi-plus"></span>&nbsp;Add Client
+  </button>
 
-  <button type="submit" class="btn btn-primary">Submit</button>
+</div>
+
+<br />
+<h1 class="display-4">Welcome.</h1>
+<p class="lead">
+  To get started, either select a client in the above menu, or <a href="/clients">add a client</a>.<br/>
+  Once a client is added, you may manage their requests.
+</p>
+<br />
 
 </form><br/>
 
@@ -86,5 +40,5 @@
 
 {% block footer_scripts %}
   {{ super() }}
-  <script src="{{ url_for('static', filename='requests.js') }}"></script>
+  <script src="{{ url_for('static', filename='clients.js') }}"></script>
 {% endblock %}

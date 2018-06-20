@@ -13,4 +13,7 @@ Things needed more separation so everything was extrapolated a bit. Templates no
 Worked on prioritizing list function. Didn't realize Borders closed at 7pm on Sunday. Didn't have as much time here as I had hoped.
 
 ### June 18th, 2018.
-Was able to setup adding/re-prioritizing and removing/re-prioritizing. Removing still needs a bit of work but otherwise, when adding an Feature Request it will re-order the UI in real-time.
+Hopefully you're not on a diet because here we have the "meat and potatoes" of the app. The ability to add a request and have the table update (in real-time) was implemented. On the flip side, deleting also works albeit with a few issues.
+
+### June 19th, 2018.
+Today was fun, a lot of the major components came together. Drag and drop functionality was added to the request lists! This means, in addition to adding a new request with a priority and having the list update in real-time, you can also re-arrange existing requests. The interface has also been updated.

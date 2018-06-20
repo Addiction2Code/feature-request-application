@@ -1,6 +1,10 @@
 function FeatureRequestListViewModel() {
   // Data
   var self = this;
+  self.clients = ko.observableArray([]);
+  self.curClient = ko.observable();
+  self.curDragItem = ko.observable();
+  self.finDragItem = ko.observable();
   self.featureRequests = ko.observableArray([]);
   self.newFeatureRequestTitle = ko.observable();
   self.newFeatureRequestDesc = ko.observable();
@@ -23,14 +27,14 @@ function FeatureRequestListViewModel() {
 
   self.deleteFeatureRequest = function(id) {
     return $.ajax({
-  	  url: '/api/feature-requests/delete/'+id,
+  	  url: `/api/feature-requests/delete/${id}`,
   	  contentType: 'application/json',
   	  type: 'DELETE',
   	  success: function(data) {
         self.featureRequests(self.featureRequests().filter(function(obj) {
           return obj.id() !== id;
         }));
-        self.updateFeatureRequests(data);
+        self.updateFeatureRequests(data.feature_requests);
     		return;
   	  },
   	  error: function() {
@@ -41,6 +45,7 @@ function FeatureRequestListViewModel() {
 
   self.updateFeatureRequests = function(updates) {
    var data = self.featureRequests();
+   data.valueHas
    for(var a = 0; a < updates.length; a++) {
      var objFound = false;
      for (var i = 0; i < data.length; i++) {
@@ -54,6 +59,7 @@ function FeatureRequestListViewModel() {
      }
    }
    self.featureRequests(data);
+   self.initDragDrop();
  };
 
   self.save = function() {
@@ -68,7 +74,7 @@ function FeatureRequestListViewModel() {
         'client_id': self.newFeatureRequestClient.selectedId(),
   	  }),
   	  success: function(data) {
-        self.updateFeatureRequests(data);
+        self.updateFeatureRequests(data.feature_requests);
     		return;
   	  },
   	  error: function() {
@@ -77,8 +83,58 @@ function FeatureRequestListViewModel() {
   	});
   };
 
+  self.setCurClient = function(client) {
+    return self.curClient(client);
+  }
+
+  self.initDragDrop = function() {
+    // Initialise the table
+    $("#mainTable").tableDnD({
+      onDragStart: function(table, row) {
+        // Store "Drag From" location.
+        self.curDragItem(null);
+        self.curDragItem($(row).index()+1);
+      },
+      onDrop: function(table, row) {
+        // Store "Drag To" location.
+        self.finDragItem(null);
+        self.finDragItem($(row).index()+1);
+        console.log({"start": self.curDragItem(), "stop": self.finDragItem()});
+        // Tell the server to reprioritize requests between the given params.
+        return $.ajax({
+      	  url: '/api/feature-requests/prioritize',
+      	  contentType: 'application/json',
+      	  type: 'POST',
+          data: JSON.stringify({
+      		  'client_id': self.curClient().id(),
+      		  'cur_priority': self.curDragItem(),
+            'new_priority': self.finDragItem(),
+      	  }),
+      	  success: function(data) {
+            self.updateFeatureRequests(data.feature_requests);
+            self.initDragDrop();
+        		return;
+      	  },
+      	  error: function() {
+      		  return console.log("Could not delete request!");
+      	  }
+      	});
+      }
+    });
+  };
+
+  $(document).ready(function() {
+    self.initDragDrop();
+    $(function () {
+      $('[data-toggle="tooltip"]').tooltip()
+    })
+  });
+
+  self.curClient(new Client(window.FeatureHandler.client));
+  self.newFeatureRequestClient.selectedId(self.curClient().id());
+
   // Get Feature Requests at runtime.
-  $.getJSON('/api/feature-requests', function(featureRequestModels) {
+  $.getJSON(`/api/feature-requests/${self.curClient().id()}`, function(featureRequestModels) {
   	var temp = $.map(featureRequestModels.feature_requests, function(item) {
   	  return new FeatureRequest(item);
   	});
@@ -90,6 +146,7 @@ function FeatureRequestListViewModel() {
     var temp = $.map(clientModels.clients, function(item) {
       return new Client(item);
     });
+    self.clients(temp);
     self.newFeatureRequestClient.options(temp);
   });
 }

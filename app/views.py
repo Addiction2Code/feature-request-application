@@ -14,6 +14,16 @@ def rotate_list(items, up=True):
     items.append(items.pop(0))
   return items
 
+def store_feature_request_order(feature_requests, start_priority=1):
+  for index, item in enumerate(feature_requests):
+    if item != None:
+      feature_requests[index]["priority"] = (index + start_priority)
+      update = db.session.query(FeatureRequest).filter_by(id=item['id']).update({
+        "priority": feature_requests[index]["priority"]
+      })
+      db.session.commit()
+  return feature_requests
+
 def reprioritize_feature_requests(client_id, cur_priority, new_priority):
   priorities = sorted([int(cur_priority), int(new_priority)])
   feature_requests = FeatureRequest.query.filter(
@@ -28,15 +38,7 @@ def reprioritize_feature_requests(client_id, cur_priority, new_priority):
     feature_requests_schema.dump(feature_requests).data,
     (int(cur_priority) > int(new_priority))
   )
-  for index, item in enumerate(revolver):
-    if item != None:
-      revolver[index]["priority"] = (index + priorities[0])
-      update = db.session.query(FeatureRequest).filter_by(id=item['id']).update({
-        "priority": revolver[index]["priority"]
-      })
-      db.session.commit()
-  # Add some error handling.
-  return revolver
+  return store_feature_request_order(revolver, priorities[0])
 
 ## Routes
 ## Reference: REST API Design Rulebook
@@ -52,14 +54,22 @@ def clients():
 
 @app.route('/feature-requests/<client_id>')
 def feature_requests(client_id):
-  return render_template('feature-requests.html')
+  client = Client.query.filter(Client.id==client_id).first()
+  return render_template('requests.html', client=client)
 
 ## API Related
 @app.route('/api/feature-requests')
-def get_feature_requests():
-  feature_requests = FeatureRequest.query.all()
+@app.route('/api/feature-requests/<int:client_id>')
+def get_feature_requests(client_id=None):
+  print(client_id)
+  feature_requests = FeatureRequest.query
+  if(isinstance(client_id, int)):
+    print("HERE!!!")
+    feature_requests = feature_requests.filter(FeatureRequest.client_id==client_id)
+  feature_requests = feature_requests.order_by(FeatureRequest.priority.asc()).all()
   feature_requests_schema = FeatureRequestSchema(many=True)
   result = feature_requests_schema.dump(feature_requests).data
+  print(result)
   return jsonify(feature_requests=result)
 
 @app.route('/api/feature-requests/new', methods=['POST'])
@@ -78,7 +88,7 @@ def create_feature_request():
 
   # We'll return all records with adjusted priority.
   return jsonify(
-    reprioritize_feature_requests(request.json['client_id'], initial_priority, request.json['priority'])
+    feature_requests=reprioritize_feature_requests(request.json['client_id'], initial_priority, request.json['priority'])
   )
 
 @app.route('/api/feature-requests/prioritize', methods=['POST'])
@@ -89,6 +99,13 @@ def prioritize_feature_request():
     request.json['new_priority']
   )
   return jsonify(feature_requests=result);
+
+# @app.route('/api/feature-requests/reprioritize', methods=['POST'])
+# def prioritize_feature_request():
+#   result = store_feature_request_order(
+#     response.json['items']
+#   )
+#   return jsonify(feature_requests=result);
 
 @app.route('/api/feature-requests/delete/<feature_request_id>', methods=['DELETE'])
 def delete_feature_request(feature_request_id):
@@ -101,7 +118,7 @@ def delete_feature_request(feature_request_id):
     feature_request.priority,
     (FeatureRequest.nextPriorityByClient(feature_request.client_id)-1)
   )
-  return jsonify(success=result)
+  return jsonify(feature_requests=result)
 
 @app.route('/api/clients')
 def get_clients():

@@ -1,0 +1,155 @@
+{% extends "layout.html" %}
+{% block title %}Welcome{% endblock %}
+
+{% block content %}
+<div class="client-switcher">
+  <p class="lead">&nbsp;Navigate through client lists here.</p>
+  <div class="btn-group" role="group" aria-label="Client Switcher" data-bind="foreach: clients">
+    <!-- ko if: (id() == {{ client.id }}) -->
+      <button
+        class="btn btn-light active"
+        data-bind="
+          text: name,
+          click: function () {
+            location.href='/feature-requests/'+id();
+          }
+        ">
+      </button>
+    <!-- /ko -->
+    <!-- ko ifnot: (id() == {{ client.id }}) -->
+      <button
+        class="btn btn-light"
+        data-bind="
+          text: name,
+          click: function () {
+            location.href='/feature-requests/'+id();
+          }
+        ">
+      </button>
+    <!-- /ko -->
+  </div>
+  <button
+    class="btn btn-primary"
+    data-bind="
+      click: function () {
+        location.href='/clients';
+      }
+    "><span class="oi oi-plus"></span>&nbsp;Add Client
+  </button>
+
+</div>
+
+<br />
+<h4>Open Requests</h4>
+<br />
+
+<table id="mainTable"
+       data-toggle="table"
+       class="table table-hover"
+  >
+  <thead class="light-blue-grey">
+    <tr>
+      <th style="display:none" data-field="id" data-visible="false">id</th>
+      <th data-field="title">Title</th>
+      <th data-field="client">Client</th>
+      <th class="priority-col" data-field="priority" data-sortable="true">Priority</th>
+      <th class="details-col" data-field="details" data-sortable="true">Details</th>
+      <th class="actions-col">Actions</th>
+    </tr>
+  </thead>
+  <tbody data-bind="foreach: featureRequests().sort(function (l, r) { return l.priority() > r.priority() ? 1 : -1 })">
+  <!-- <tbody data-bind="foreach: featureRequests, visible: featureRequests().length > 0"> -->
+    <tr data-bind="attr: { 'id': 'itemId_'+id(), 'data-index': id() }">
+      <td style="display:none" data-bind="text: id"></td>
+      <td data-bind="text: title"></td>
+      <td data-bind="text: clientName"></td>
+      <td class="priority-row-item lead" data-bind="text: priorityText()"></td>
+      <td class="details-row-item">
+        <a class="tooltip-item" data-toggle="tooltip" data-placement="top" data-bind="
+          attr: {
+            title: description
+          }
+        ">Hover</a>
+      </td>
+      <td>
+        <button class="btn-sm btn-danger" data-bind="
+            click: function() {
+              $parent.deleteFeatureRequest(id())
+            }
+        ">
+          Delete
+        </button>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<form data-bind="submit: addFeatureRequest">
+
+  <div class="row">
+    <div class="form-group col-sm-6">
+      <label>Title</label>
+      <input
+        required="true"
+        data-bind="value: newFeatureRequestTitle"
+        placeholder="What's this feature called?"
+        class="form-control"
+      />
+    </div>
+    <div class="form-group col-sm-4">
+      <label>Client</label>
+      <select
+        class="form-control"
+        disabled="true"
+        data-bind="
+          options: curClient,
+          optionsText: function(item) {
+            return item.name();
+          },
+          optionsValue: function(item) {
+            return item.id();
+          },
+          value: curClient().id
+        "
+      ></select>
+    </div>
+    <div class="form-group col-sm-2">
+      <label>Priority</label>
+      <input
+        type="number"
+        min="1"
+        data-bind="value: newFeatureRequestPriority"
+        placeholder="1..n"
+        class="form-control"
+      />
+    </div>
+  </div>
+  <div class="row">
+    <div class="form-group col-sm-12">
+      <label>Details</label>
+      <textarea
+        data-bind="value: newFeatureRequestDesc"
+        placeholder="What are the details?"
+        class="form-control"
+      ></textarea>
+    </div>
+  </div>
+
+  <button type="submit" class="btn btn-primary">Make it Official&nbsp;<span class="oi oi-pin"></span></button>
+
+</form><br/>
+
+{% endblock %}
+
+{% block footer_scripts %}
+  <script>
+    window.FeatureHandler = {
+      client: {
+        id: {{ client.id }},
+        name: "{{ client.name }}"
+      }
+    }
+  </script>
+  {{ super() }}
+  <script src="{{ url_for('static', filename='requests.js') }}"></script>
+{% endblock %}

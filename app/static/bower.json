@@ -18,6 +18,12 @@
   "dependencies": {
     "bootstrap4": "^4.1.1",
     "knockout": "knockoutjs#^3.4.2",
-    "jquery": "^3.3.1"
+    "jquery": "^3.3.1",
+    "bootstrap-table": "^1.12.1",
+    "TableDnD": "https://github.com/isocra/TableDnD.git#^1.0.3",
+    "table-to-json": "^0.13.0",
+    "bootswatch": "^4.1.1",
+    "popper.js": "^1.14.3",
+    "open-iconic": "^1.1.1"
   }
 }

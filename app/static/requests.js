@@ -61,8 +61,6 @@ function FeatureRequestListViewModel() {
           }),
           success: function(data) {
             self.updateFeatureRequests(data.feature_requests);
-            self.initDragDrop();
-            $('[data-toggle="tooltip"]').tooltip();
             return;
           },
           error: function() {
@@ -74,11 +72,14 @@ function FeatureRequestListViewModel() {
   };
 
   self.initTableFeatures = function() {
-    self.initDragDrop();
-    $(function () {
-      $('[data-toggle="tooltip"]').tooltip();
-    });
-  }
+    // Without the timeout we cannot be sure the DOM has updated.
+    setTimeout(function () {
+      self.initDragDrop();
+      $(function () {
+        $('[data-toggle="tooltip"]').tooltip();
+      });
+    }, 200);
+  };
 
 
   //
@@ -117,12 +118,21 @@ function FeatureRequestListViewModel() {
       }
     }
     self.featureRequests(data);
-    self.initTableFeatures();
   };
 
   self.setCurClient = function(client) {
     return self.curClient(client);
   }
+
+
+  //
+  // Subscriptions
+  //
+
+  // Any time the featureRequests updates, reload table features.
+  self.featureRequests.subscribe(function() {
+    self.initTableFeatures();
+  });
 
 
   //

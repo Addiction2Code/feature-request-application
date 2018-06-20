@@ -34,6 +34,13 @@ If you didn't get any errors you should be good to launch.
 
 For more notes, check out the [JOURNEY.md](JOURNEY.md).
 
-One feature to look for with this app is Drag Drop functionality. You should be able to grab any request and move it around. Other requests should automatically become reprioritized. Under certain circumstances there _were_ issues with TableDnD, if you cannot drag an item, try adding a new one to the list first.
+Usage
+=====
+
+Once you have everything up and running you should be able to start using the app. To add or remove clients head over to the `/clients` route or simply click the link in the top right of the app.
+
+Once a client is added, there should be one in the system by default, you can click on their named tab towards the top from the index route `/`. From there, you can add, delete or re-arrange requests.
+
+One feature to look for with this app is Drag Drop functionality. Simply hover over the item you'd like to move, press and drag to it's new position. The list should update, including the priorities of the affected requests. Though the Drag and Drop should work, if it doesn't for some reason, you may try adding an item to the list or doing a refresh. So far it's been tested on Chrome and Safari and on Mac (development) and Ubuntu (production) and everything operated as expected.
 
 Best wishes, Paul Serra

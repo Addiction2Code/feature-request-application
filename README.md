@@ -32,6 +32,11 @@ If you didn't get any errors you should be good to launch.
 
 `flask run`
 
+
+That's everything to get up and running. You're able to run tests via `pytest` as follows.
+
+`pytest -v app/tests.py`
+
 For more notes, check out the [JOURNEY.md](JOURNEY.md).
 
 Usage

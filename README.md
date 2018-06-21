@@ -6,6 +6,8 @@ Feature Request App
 Getting Started
 ===============
 
+### General Method
+
 **Note:** This app uses Python 3.6 which will need to be installed on your system. As you are likely aware, some installations of `python` include the version as part of the name *i.e.* `python3` or `python2`, this also goes for `pip` sometimes being `pip2` or `pip3`. Take a few moments to determine the proper commands before continuing to the next step.
 
 To start this app you'll want to install the requirements found in `requirements.txt`.
@@ -32,10 +34,23 @@ If you didn't get any errors you should be good to launch.
 
 `flask run`
 
+### Docker Method
 
-That's everything to get up and running. You're able to run tests via `pytest` as follows.
+As long as you have the docker suite installed you can run the following to set everything up for you.
+
+`sh init_docker.sh`
+
+Then, once complete, you can navigate to the following address in your web browser to access the app.
+
+`http://0.0.0.0:8000`
+
+### Running Tests
+
+You're able to run tests via `pytest` as follows.
 
 `pytest -v app/tests.py`
+
+### Notes
 
 For more notes, check out the [JOURNEY.md](JOURNEY.md).
 

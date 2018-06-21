@@ -2,6 +2,14 @@
     {
         "model": "app.models.FeatureRequest",
         "records": [{
+            "title": "Update Net Revenue equation.",
+            "description": "The old equation didn't take penalties into account.",
+            "product_area": "Reports",
+            "target_date": "2018-08-10",
+            "priority": 4,
+            "client_id": 1
+        },
+        {
             "title": "Add new Quotation tool to dashboard.",
             "description": "They want a widget on the front page.",
             "product_area": "Claims",

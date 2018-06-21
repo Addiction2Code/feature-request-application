@@ -4,6 +4,8 @@
 .DS_Store
 .ebignore
 app/static/bower_components
+.pytest_cache
+app/.pytest_cache
 __pycache__
 env
 
